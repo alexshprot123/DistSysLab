@@ -26,7 +26,7 @@ public class RestApi {
 
     @GET
     @Path("/{id}")
-    public ItemDTO getItemById(@PathParam("id") int id) {
+    public ItemDTO getItemById(@PathParam("id") long id) {
         return controller.getItemById(id);
     }
 
@@ -48,7 +48,7 @@ public class RestApi {
 
     @DELETE
     @Path("/{id}")
-    public ItemDTO deleteItem(@PathParam("id") int id) {
+    public ItemDTO deleteItem(@PathParam("id") long id) {
         return controller.deleteItem(id);
     }
 

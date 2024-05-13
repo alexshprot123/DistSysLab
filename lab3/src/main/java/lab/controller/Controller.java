@@ -1,13 +1,13 @@
 package lab.controller;
 
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.transaction.Transactional;
 import lab.dto.ChangeCostDTO;
 import lab.dto.ConverterDTO;
 import lab.dto.AddItemDTO;
 import lab.dto.ItemDTO;
 import lab.entity.Item;
 
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -15,43 +15,34 @@ import java.util.stream.Collectors;
 
 @ApplicationScoped
 public class Controller {
-    private List<Item> items = new ArrayList<>();
-    private int lastId = 0;
-
+    @Transactional
     public ItemDTO addItem(AddItemDTO addItemDTO) {
         Item item = ConverterDTO.toItem(addItemDTO);
 
-        lastId++;
-        item.setId(lastId);
-        items.add(item);
+        item.persist();
 
         return ConverterDTO.toItemDTO(item);
     }
 
     public List<ItemDTO> getAllItems() {
+        List<Item> items = Item.listAll();
         return items.stream()
                 .map(item -> ConverterDTO.toItemDTO(item))
                 .collect(Collectors.toList());
     }
-
-    public ItemDTO deleteItem(int id) {
-        Item item = items.stream()
-                .filter(i -> i.getId() == id)
-                .findFirst()
-                .orElse(null);
+    @Transactional
+    public ItemDTO deleteItem(long id) {
+        Item item = Item.findById(id);
 
         if (item == null)
             return null;
 
-        items.remove(item);
+        item.delete();
         return ConverterDTO.toItemDTO(item);
     }
-
+    @Transactional
     public ItemDTO updateItem(ItemDTO updateItemDTO) {
-        Item item = items.stream()
-                .filter(i -> i.getId() == updateItemDTO.getId())
-                .findFirst()
-                .orElse(null);
+        Item item = Item.findById(updateItemDTO.getId());
 
         if (item == null)
             return null;
@@ -63,30 +54,28 @@ public class Controller {
         return ConverterDTO.toItemDTO(item);
     }
 
-    public ItemDTO getItemById(int id) {
-        Item item = items.stream()
-                .filter(i -> i.getId() == id)
-                .findFirst()
-                .orElse(null);
+    public ItemDTO getItemById(long id) {
+        Item item = Item.findById(id);
         if (item != null)
             return ConverterDTO.toItemDTO(item);
         return null;
     }
 
     public List<ItemDTO> getItemsByName(String name) {
+        List<Item> items = Item.find("name", name).list();
         return items.stream()
-                .filter(item -> item.getName().contains(name))
                 .map(item -> ConverterDTO.toItemDTO(item))
                 .collect(Collectors.toList());
     }
-
+    @Transactional
     public List<ItemDTO> changeCost(ChangeCostDTO changeCostDTO) {
+        List<Item> items = Item.listAll();
         items.stream()
                 .forEach(item -> item.setCost((int) (item.getCost() * changeCostDTO.getMultiply())));
 
         return getAllItems();
     }
-
+    @Transactional
     public ItemDTO addExpensive(List<AddItemDTO> addItemDTOs) {
         AddItemDTO addItemDTO = addItemDTOs.stream()
                 .sorted(Comparator.comparingInt(AddItemDTO::getCost).reversed())

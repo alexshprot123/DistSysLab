@@ -6,7 +6,7 @@ public class ConverterDTO {
     public static ItemDTO toItemDTO(Item item){
         ItemDTO itemDTO = new ItemDTO();
 
-        itemDTO.setId(item.getId());
+        itemDTO.setId(item.id);
         itemDTO.setName(item.getName());
         itemDTO.setRare(item.getRare());
         itemDTO.setCount(item.getCount());
