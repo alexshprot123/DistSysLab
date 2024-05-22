@@ -1,10 +1,14 @@
-package lab.dto;
+package lab.panacheEntity.entity;
 
-public class AddItemDTO {
+import io.quarkus.hibernate.orm.panache.PanacheEntity;
+import jakarta.persistence.Entity;
+
+@Entity
+public class Item extends PanacheEntity {
     private String name;
     private String rare;
-    private int count;
     private int cost;
+    private int count;
 
     public String getName() {
         return name;
@@ -37,4 +41,5 @@ public class AddItemDTO {
     public void setCount(int count) {
         this.count = count;
     }
+
 }

@@ -1,12 +1,12 @@
-package lab.controller;
+package lab.panacheEntity.controller;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.transaction.Transactional;
-import lab.dto.ChangeCostDTO;
-import lab.dto.ConverterDTO;
-import lab.dto.AddItemDTO;
-import lab.dto.ItemDTO;
-import lab.entity.Item;
+import lab.panacheEntity.dto.ChangeCostDTO;
+import lab.panacheEntity.dto.ConverterDTO;
+import lab.panacheEntity.dto.AddItemDTO;
+import lab.panacheEntity.dto.ItemDTO;
+import lab.panacheEntity.entity.Item;
 
 import java.util.Comparator;
 import java.util.List;
@@ -30,6 +30,7 @@ public class Controller {
                 .map(item -> ConverterDTO.toItemDTO(item))
                 .collect(Collectors.toList());
     }
+
     @Transactional
     public ItemDTO deleteItem(long id) {
         Item item = Item.findById(id);
@@ -40,6 +41,7 @@ public class Controller {
         item.delete();
         return ConverterDTO.toItemDTO(item);
     }
+
     @Transactional
     public ItemDTO updateItem(ItemDTO updateItemDTO) {
         Item item = Item.findById(updateItemDTO.getId());
@@ -67,6 +69,7 @@ public class Controller {
                 .map(item -> ConverterDTO.toItemDTO(item))
                 .collect(Collectors.toList());
     }
+
     @Transactional
     public List<ItemDTO> changeCost(ChangeCostDTO changeCostDTO) {
         List<Item> items = Item.listAll();
@@ -75,6 +78,7 @@ public class Controller {
 
         return getAllItems();
     }
+
     @Transactional
     public ItemDTO addExpensive(List<AddItemDTO> addItemDTOs) {
         AddItemDTO addItemDTO = addItemDTOs.stream()

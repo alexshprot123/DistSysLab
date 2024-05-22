@@ -1,4 +1,4 @@
-package lab.dto;
+package lab.panacheEntity.dto;
 
 public class ItemDTO {
     private long id;

@@ -1,4 +1,4 @@
-package lab.web;
+package lab.rest;
 
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.POST;
@@ -8,7 +8,7 @@ import org.eclipse.microprofile.reactive.messaging.Channel;
 import org.eclipse.microprofile.reactive.messaging.Emitter;
 
 @Path("/rabbitmq")
-public class RabbitmqApi {
+public class RestRabbitmq {
     @Channel("quote-requests")
     Emitter<String> emitter;
 

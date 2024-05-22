@@ -1,20 +1,19 @@
-package lab.web;
+package lab.rest;
 
-import io.quarkus.logging.Log;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
-import lab.controller.Controller;
-import lab.dto.AddItemDTO;
-import lab.dto.ChangeCostDTO;
-import lab.dto.ItemDTO;
+import lab.panacheEntity.controller.Controller;
+import lab.panacheEntity.dto.AddItemDTO;
+import lab.panacheEntity.dto.ChangeCostDTO;
+import lab.panacheEntity.dto.ItemDTO;
 
 import java.util.List;
 
 @Path("/items")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
-public class RestApi {
+public class RestPanache {
 
     @Inject
     Controller controller;

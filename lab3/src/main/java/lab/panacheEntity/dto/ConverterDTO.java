@@ -1,9 +1,9 @@
-package lab.dto;
+package lab.panacheEntity.dto;
 
-import lab.entity.Item;
+import lab.panacheEntity.entity.Item;
 
 public class ConverterDTO {
-    public static ItemDTO toItemDTO(Item item){
+    public static ItemDTO toItemDTO(Item item) {
         ItemDTO itemDTO = new ItemDTO();
 
         itemDTO.setId(item.id);
@@ -15,7 +15,7 @@ public class ConverterDTO {
         return itemDTO;
     }
 
-    public static Item toItem(AddItemDTO addItemDTO){
+    public static Item toItem(AddItemDTO addItemDTO) {
         Item item = new Item();
 
         item.setName(addItemDTO.getName());
