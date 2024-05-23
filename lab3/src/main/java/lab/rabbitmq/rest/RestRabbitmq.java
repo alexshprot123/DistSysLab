@@ -1,4 +1,4 @@
-package lab.rest;
+package lab.rabbitmq.rest;
 
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.POST;

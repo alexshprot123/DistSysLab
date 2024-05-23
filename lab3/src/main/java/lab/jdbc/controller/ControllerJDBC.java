@@ -1,8 +1,8 @@
-package lab.jdbc;
+package lab.jdbc.controller;
 
 import io.quarkus.logging.Log;
 import jakarta.enterprise.context.ApplicationScoped;
-import lab.jdbc.entitys.Item;
+import lab.jdbc.entity.Item;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 import java.sql.*;
@@ -16,8 +16,7 @@ public class ControllerJDBC {
 
     public ControllerJDBC(@ConfigProperty(name = "quarkus.datasource.jdbc.url") String url,
                           @ConfigProperty(name = "quarkus.datasource.username") String username,
-                          @ConfigProperty(name = "quarkus.datasource.password") String password)
-    {
+                          @ConfigProperty(name = "quarkus.datasource.password") String password) {
         try {
             System.out.println(url + username + password);
             connection = DriverManager.getConnection(url, username, password);

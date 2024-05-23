@@ -1,4 +1,4 @@
-package lab.rest;
+package lab.panacheEntity.rest;
 
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;

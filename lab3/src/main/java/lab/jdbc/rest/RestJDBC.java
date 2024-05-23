@@ -1,9 +1,9 @@
-package lab.rest;
+package lab.jdbc.rest;
 
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
-import lab.jdbc.ControllerJDBC;
-import lab.jdbc.entitys.Item;
+import lab.jdbc.controller.ControllerJDBC;
+import lab.jdbc.entity.Item;
 
 import java.util.List;
 

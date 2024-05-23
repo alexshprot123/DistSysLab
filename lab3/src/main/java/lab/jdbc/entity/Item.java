@@ -1,6 +1,4 @@
-package lab.jdbc.entitys;
-
-import io.quarkus.hibernate.orm.panache.PanacheEntity;
+package lab.jdbc.entity;
 
 public class Item {
     private Long id;

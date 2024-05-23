@@ -1,4 +1,4 @@
-package lab;
+package lab.rabbitmq;
 
 import io.quarkus.logging.Log;
 import jakarta.enterprise.context.ApplicationScoped;
