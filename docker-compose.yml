@@ -1,0 +1,48 @@
+version: "3"
+
+services:
+  postgres:
+    image: postgres:13.3
+    environment:
+      POSTGRES_DB: "items"
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "postgres"
+    ports:
+      - 15432:5432
+    volumes:
+      - postgres-volume:/var/lib/postgresql/data
+    networks:
+      - app-net
+  rabbitmq:
+    image: rabbitmq:3.13-management
+    ports:
+      - 15672:15672
+    networks:
+      - app-net
+  quarkus-app:
+    image: quarkus-app:1.0
+    build:
+      context: ./quarkus-app
+      dockerfile: src/main/docker/dockerfile.jvm
+    environment:
+      DATA_BASE_USERNAME: "postgres"
+      DATA_BASE_PASSWORD: "postgres"
+      DATA_BASE_URL: "jdbc:postgresql://postgres:5432/items"
+      RABBITMQ_HOST: "rabbitmq"
+      RABBITMQ_PORT: "5672"
+    ports:
+      - 8080:8080
+    depends_on:
+      - postgres
+      - rabbitmq
+    networks:
+      - app-net
+volumes:
+  postgres-volume:
+    name: postgres-volume
+networks:
+  app-net:
+    external:
+      name: app-net
+
+
