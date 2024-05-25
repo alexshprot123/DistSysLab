@@ -1,6 +1,6 @@
-package lab.panacheEntity.dto;
+package lab.dto;
 
-import lab.panacheEntity.entity.Item;
+import lab.db.entity.Item;
 
 public class ConverterDTO {
     public static ItemDTO toItemDTO(Item item) {

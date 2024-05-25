@@ -1,66 +1,66 @@
-package lab.panacheEntity.rest;
+package lab.controllers;
 
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
-import lab.panacheEntity.controller.Controller;
-import lab.panacheEntity.dto.AddItemDTO;
-import lab.panacheEntity.dto.ChangeCostDTO;
-import lab.panacheEntity.dto.ItemDTO;
+import lab.db.PanacheService;
+import lab.dto.AddItemDTO;
+import lab.dto.ChangeCostDTO;
+import lab.dto.ItemDTO;
 
 import java.util.List;
 
 @Path("/items")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
-public class RestPanache {
+public class PanacheController {
 
     @Inject
-    Controller controller;
+    PanacheService panacheService;
 
     @GET
     public List<ItemDTO> getALL() {
-        return controller.getAllItems();
+        return panacheService.getAllItems();
     }
 
     @GET
     @Path("/{id}")
     public ItemDTO getItemById(@PathParam("id") long id) {
-        return controller.getItemById(id);
+        return panacheService.getItemById(id);
     }
 
     @GET
     @Path("/byName")
     public List<ItemDTO> getByName(@QueryParam("name") String name) {
-        return controller.getItemsByName(name);
+        return panacheService.getItemsByName(name);
     }
 
     @POST
     public ItemDTO addItem(AddItemDTO addItemDTO) {
-        return controller.addItem(addItemDTO);
+        return panacheService.addItem(addItemDTO);
     }
 
     @PUT
     public ItemDTO changeItem(ItemDTO updateItemDTO) {
-        return controller.updateItem(updateItemDTO);
+        return panacheService.updateItem(updateItemDTO);
     }
 
     @DELETE
     @Path("/{id}")
     public ItemDTO deleteItem(@PathParam("id") long id) {
-        return controller.deleteItem(id);
+        return panacheService.deleteItem(id);
     }
 
     @POST
     @Path("/cost")
     public List<ItemDTO> changeCost(ChangeCostDTO changeCostDTO) {
-        return controller.changeCost(changeCostDTO);
+        return panacheService.changeCost(changeCostDTO);
     }
 
     @POST
     @Path("/expensive")
     public ItemDTO changeCost(List<AddItemDTO> rares) {
-        return controller.addExpensive(rares);
+        return panacheService.addExpensive(rares);
     }
 
 

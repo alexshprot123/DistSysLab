@@ -1,19 +1,14 @@
-package lab.jdbc.entity;
+package lab.db.entity;
 
-public class Item {
-    private Long id;
+import io.quarkus.hibernate.orm.panache.PanacheEntity;
+import jakarta.persistence.Entity;
+
+@Entity
+public class Item extends PanacheEntity {
     private String name;
     private String rare;
     private int cost;
     private int count;
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
 
     public String getName() {
         return name;
@@ -46,4 +41,5 @@ public class Item {
     public void setCount(int count) {
         this.count = count;
     }
+
 }

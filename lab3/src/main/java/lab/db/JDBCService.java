@@ -1,22 +1,23 @@
-package lab.jdbc.controller;
+package lab.db;
 
 import io.quarkus.logging.Log;
 import jakarta.enterprise.context.ApplicationScoped;
-import lab.jdbc.entity.Item;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import lab.db.entity.Item;
+
 @ApplicationScoped
-public class ControllerJDBC {
+public class JDBCService {
 
     private Connection connection;
 
-    public ControllerJDBC(@ConfigProperty(name = "quarkus.datasource.jdbc.url") String url,
-                          @ConfigProperty(name = "quarkus.datasource.username") String username,
-                          @ConfigProperty(name = "quarkus.datasource.password") String password) {
+    public JDBCService(@ConfigProperty(name = "quarkus.datasource.jdbc.url") String url,
+                       @ConfigProperty(name = "quarkus.datasource.username") String username,
+                       @ConfigProperty(name = "quarkus.datasource.password") String password) {
         try {
             System.out.println(url + username + password);
             connection = DriverManager.getConnection(url, username, password);
@@ -34,7 +35,7 @@ public class ControllerJDBC {
             while (result.next()) {
                 Item item = new Item();
 
-                item.setId(result.getLong("id"));
+                item.id = result.getLong("id");
                 item.setName(result.getString("name"));
                 item.setRare(result.getString("rare"));
                 item.setCost(result.getInt("cost"));
@@ -76,7 +77,7 @@ public class ControllerJDBC {
             preparedStatement.setString(2, item.getRare());
             preparedStatement.setInt(3, item.getCost());
             preparedStatement.setInt(4, item.getCount());
-            preparedStatement.setLong(5, item.getId());
+            preparedStatement.setLong(5, item.id);
 
             preparedStatement.executeUpdate();
             return true;

@@ -1,12 +1,12 @@
-package lab.panacheEntity.controller;
+package lab.db;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.transaction.Transactional;
-import lab.panacheEntity.dto.ChangeCostDTO;
-import lab.panacheEntity.dto.ConverterDTO;
-import lab.panacheEntity.dto.AddItemDTO;
-import lab.panacheEntity.dto.ItemDTO;
-import lab.panacheEntity.entity.Item;
+import lab.dto.ChangeCostDTO;
+import lab.dto.ConverterDTO;
+import lab.dto.AddItemDTO;
+import lab.dto.ItemDTO;
+import lab.db.entity.Item;
 
 import java.util.Comparator;
 import java.util.List;
@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 
 
 @ApplicationScoped
-public class Controller {
+public class PanacheService {
     @Transactional
     public ItemDTO addItem(AddItemDTO addItemDTO) {
         Item item = ConverterDTO.toItem(addItemDTO);
