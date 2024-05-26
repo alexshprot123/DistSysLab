@@ -20,7 +20,7 @@ services:
       - 15672:15672
     networks:
       - app-net
-  quarkus-app:
+  quarkus-app-1:
     image: quarkus-app:1.0
     build:
       context: ./quarkus-app
@@ -32,37 +32,113 @@ services:
       RABBITMQ_HOST: "rabbitmq"
       RABBITMQ_PORT: "5672"
     ports:
-      - 8080:8080
+      - 8081:8080
     depends_on:
       - postgres
       - rabbitmq
       - logstash
     networks:
       - app-net
-#  prometheus:
-#    image: prom/prometheus
-#    container_name: prometheus
-#    command:
-#      - '--config.file=/etc/prometheus/prometheus.yml'
-#    restart: unless-stopped
-#    ports:
-#      - 9090:9090
-#    volumes:
-#      - ./monitoring/prometheus:/etc/prometheus
-#      - prometheus-data:/prometheus
-#    networks:
-#      - app-net
-#  grafana:
-#    image: grafana/grafana
-#    container_name: grafana
-#    restart: unless-stopped
-#    environment:
-#      - GF_SECURITY_ADMIN_USER=admin
-#      - GF_SECURITY_ADMIN_PASSWORD=admin
-#    ports:
-#      - 3000:3000
-#    networks:
-#      - app-net
+
+  quarkus-app-2:
+    image: quarkus-app:1.0
+    build:
+      context: ./quarkus-app
+      dockerfile: src/main/docker/dockerfile.jvm
+    environment:
+      DATA_BASE_USERNAME: "postgres"
+      DATA_BASE_PASSWORD: "postgres"
+      DATA_BASE_URL: "jdbc:postgresql://postgres:5432/items"
+      RABBITMQ_HOST: "rabbitmq"
+      RABBITMQ_PORT: "5672"
+    ports:
+      - 8082:8080
+    depends_on:
+      - postgres
+      - rabbitmq
+      - logstash
+    networks:
+      - app-net
+
+  quarkus-app-3:
+    image: quarkus-app:1.0
+    build:
+      context: ./quarkus-app
+      dockerfile: src/main/docker/dockerfile.jvm
+    environment:
+      DATA_BASE_USERNAME: "postgres"
+      DATA_BASE_PASSWORD: "postgres"
+      DATA_BASE_URL: "jdbc:postgresql://postgres:5432/items"
+      RABBITMQ_HOST: "rabbitmq"
+      RABBITMQ_PORT: "5672"
+    ports:
+      - 8083:8080
+    depends_on:
+      - postgres
+      - rabbitmq
+      - logstash
+    networks:
+      - app-net
+
+  nginx:
+    image: nginx
+    container_name: nginx
+    restart: unless-stopped
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+    ports:
+      - 80:80
+    networks:
+      - app-net
+
+  consul:
+    image: consul:1.9.5
+    container_name: consul
+    ports:
+      - 8500:8500
+      - 8600:8600
+    environment:
+      - CONSUL_BIND_INTERFACE=eth0
+    networks:
+      - app-net
+
+  registrator:
+    image: gliderlabs/registrator:master
+    container_name: registrator
+    restart: unless-stopped
+    volumes:
+      - "/var/run/docker.sock:/tmp/docker.sock"
+    command: consul://consul:8500
+    depends_on:
+      - consul
+    networks:
+      - app-net
+
+  prometheus:
+    image: prom/prometheus
+    container_name: prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+    restart: unless-stopped
+    ports:
+      - 9090:9090
+    volumes:
+      - ./monitoring/prometheus:/etc/prometheus
+      - prometheus-data:/prometheus
+    networks:
+      - app-net
+  grafana:
+    image: grafana/grafana
+    container_name: grafana
+    restart: unless-stopped
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+    ports:
+      - 3000:3000
+    networks:
+      - app-net
+
   elasticsearch:
     image: elasticsearch:8.13.4
     ports:
